@@ -6,12 +6,15 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Patch, UseGuards,
+  Patch,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './create-product.dto';
 import { UpdateProductDto } from './update-product.dto';
-import {JwtAuthenticationGuard} from '../authentication/jwt-authentication.guard';
+import { JwtAuthenticationGuard } from '../authentication/jwt-authentication.guard';
+import type { RequestWithUser } from '../authentication/request-with-user';
 
 @Controller('products')
 export class ProductsController {
@@ -19,7 +22,7 @@ export class ProductsController {
 
   @Post()
   @UseGuards(JwtAuthenticationGuard)
-  create(@Body() product: CreateProductDto) {
+  create(@Body() product: CreateProductDto, @Req() request: RequestWithUser) {
     return this.productsService.create(product);
   }
 
